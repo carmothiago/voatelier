@@ -1,0 +1,14 @@
+RewriteEngine On
+
+# Serve arquivos estáticos de public/ quando acessados sem o prefixo /public
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(css|js|assets)/(.*)$ public/$1/$2 [L]
+
+# Bloqueia acesso direto a pastas internas do sistema
+RewriteRule ^(app|config|database|routes|storage)(/|$) - [F,L]
+
+# Todo o restante das requisições passa pelo front controller
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ public/index.php [QSA,L]
