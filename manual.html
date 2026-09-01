@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Manual de Instalação — Vitória Oliver Atelier</title>
+<style>
+    @page {
+        margin: 20mm 18mm 22mm 18mm;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+        font-family: 'DejaVu Sans', Arial, sans-serif;
+        color: #2b2723;
+        font-size: 10.5pt;
+        line-height: 1.55;
+        margin: 0;
+    }
+
+    h1, h2, h3, h4 {
+        font-family: Georgia, 'DejaVu Serif', serif;
+        color: #1c1a18;
+        font-weight: 700;
+        margin-top: 0;
+    }
+
+    a { color: #b08d57; }
+
+    /* ---------------- CAPA ---------------- */
+    .capa {
+        height: 253mm;
+        display: table;
+        width: 100%;
+        text-align: center;
+        background: linear-gradient(160deg, #ffffff 0%, #f4efe6 100%);
+    }
+    .capa-conteudo {
+        display: table-cell;
+        vertical-align: middle;
+    }
+    .capa img.logo-capa {
+        width: 320px;
+        margin-bottom: 50px;
+    }
+    .capa .selo {
+        display: inline-block;
+        border: 1px solid #b08d57;
+        color: #b08d57;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        font-size: 9pt;
+        padding: 7px 18px;
+        border-radius: 20px;
+        margin-bottom: 26px;
+    }
+    .capa h1 {
+        font-size: 30pt;
+        margin: 0 0 10px 0;
+        color: #1c1a18;
+    }
+    .capa .subtitulo {
+        font-size: 13pt;
+        color: #6f675d;
+        margin-bottom: 60px;
+    }
+    .capa .rodape-capa {
+        font-size: 9.5pt;
+        color: #6f675d;
+        letter-spacing: 0.04em;
+    }
+    .capa .rodape-capa strong { color: #1c1a18; }
+
+    /* ---------------- SUMÁRIO ---------------- */
+    .sumario { page-break-before: always; page-break-after: always; padding-top: 6mm; }
+    .sumario h1 { font-size: 20pt; border-bottom: 2px solid #b08d57; padding-bottom: 10px; margin-bottom: 20px; }
+    .sumario ol { list-style: none; margin: 0; padding: 0; counter-reset: item; }
+    .sumario li {
+        font-size: 11.5pt;
+        padding: 9px 0;
+        border-bottom: 1px dotted #e7e1d8;
+        display: flex;
+        justify-content: space-between;
+    }
+    .sumario li .num { color: #b08d57; font-weight: bold; width: 26px; display: inline-block; }
+
+    /* ---------------- CAPÍTULOS ---------------- */
+    .capitulo { page-break-before: always; padding-top: 4mm; }
+    .capitulo h1 {
+        font-size: 19pt;
+        border-bottom: 2px solid #b08d57;
+        padding-bottom: 10px;
+        margin-bottom: 16px;
+    }
+    .capitulo h1 .rotulo {
+        color: #b08d57;
+        font-family: Arial, sans-serif;
+        font-size: 11pt;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        display: block;
+        margin-bottom: 4px;
+        font-weight: 600;
+    }
+    h2 {
+        font-size: 14pt;
+        margin-top: 26px;
+        margin-bottom: 10px;
+        color: #1c1a18;
+    }
+    h3 {
+        font-size: 12pt;
+        margin-top: 18px;
+        margin-bottom: 8px;
+        color: #2b2723;
+    }
+
+    p { margin: 0 0 10px 0; text-align: justify; }
+
+    /* ---------------- IMAGENS / FIGURAS ---------------- */
+    figure {
+        margin: 16px 0;
+        text-align: center;
+        page-break-inside: avoid;
+    }
+    figure img {
+        max-width: 100%;
+        border: 1px solid #e7e1d8;
+        border-radius: 6px;
+    }
+    figure.sem-borda img { border: none; }
+    figcaption {
+        font-size: 8.7pt;
+        color: #6f675d;
+        margin-top: 6px;
+        font-style: italic;
+    }
+
+    /* ---------------- CAIXAS DE DESTAQUE ---------------- */
+    .caixa {
+        border-radius: 6px;
+        padding: 12px 16px;
+        margin: 14px 0;
+        font-size: 10pt;
+        page-break-inside: avoid;
+    }
+    .caixa-dica { background: #f1e6d3; border-left: 4px solid #b08d57; }
+    .caixa-atencao { background: #fbeceb; border-left: 4px solid #a4453a; }
+    .caixa-nota { background: #eef4ec; border-left: 4px solid #4c7a52; }
+    .caixa strong.titulo-caixa { display: block; margin-bottom: 4px; font-size: 10.3pt; }
+
+    /* ---------------- TABELAS ---------------- */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 14px 0;
+        font-size: 9.5pt;
+        page-break-inside: avoid;
+    }
+    th {
+        background: #1c1a18;
+        color: #fff;
+        text-align: left;
+        padding: 7px 10px;
+        font-size: 9pt;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+    }
+    td {
+        padding: 7px 10px;
+        border-bottom: 1px solid #e7e1d8;
+        vertical-align: top;
+    }
+    tr:nth-child(even) td { background: #faf8f5; }
+    code, .codigo-inline {
+        font-family: 'DejaVu Sans Mono', monospace;
+        background: #f1e6d3;
+        padding: 1px 5px;
+        border-radius: 3px;
+        font-size: 9.3pt;
+        color: #7a5a28;
+    }
+    pre.bloco-codigo {
+        background: #1c1a18;
+        color: #f1e6d3;
+        padding: 12px 14px;
+        border-radius: 6px;
+        font-family: 'DejaVu Sans Mono', monospace;
+        font-size: 9pt;
+        line-height: 1.5;
+        overflow-x: auto;
+        page-break-inside: avoid;
+        margin: 12px 0;
+    }
+
+    /* ---------------- LISTAS NUMERADAS DE PASSOS ---------------- */
+    ol.passos { counter-reset: passo; list-style: none; padding-left: 0; margin: 14px 0; }
+    ol.passos > li {
+        counter-increment: passo;
+        position: relative;
+        padding: 4px 0 10px 38px;
+        margin-bottom: 4px;
+    }
+    ol.passos > li::before {
+        content: counter(passo);
+        position: absolute;
+        left: 0;
+        top: 2px;
+        width: 26px;
+        height: 26px;
+        background: #b08d57;
+        color: #fff;
+        border-radius: 50%;
+        text-align: center;
+        line-height: 26px;
+        font-weight: bold;
+        font-size: 10.5pt;
+    }
+
+    ul.lista-simples { margin: 8px 0; padding-left: 20px; }
+    ul.lista-simples li { margin-bottom: 5px; }
+
+    .checklist { list-style: none; padding-left: 0; margin: 12px 0; }
+    .checklist li {
+        padding: 6px 0 6px 26px;
+        position: relative;
+        border-bottom: 1px solid #f0ece4;
+        font-size: 10pt;
+    }
+    .checklist li::before {
+        content: "✓";
+        position: absolute;
+        left: 0;
+        color: #4c7a52;
+        font-weight: bold;
+    }
+
+    .duas-colunas { display: flex; gap: 16px; }
+    .duas-colunas > div { flex: 1; }
+
+    .rodape-pagina {
+        font-size: 8pt;
+        color: #6f675d;
+        text-align: center;
+        margin-top: 30px;
+    }
+</style>
+</head>
+<body>
+
+<!-- ============================================================ -->
+<!-- CAPA -->
+<!-- ============================================================ -->
+<div class="capa">
+    <div class="capa-conteudo">
+        <img class="logo-capa" src="imagens/logo.png" alt="Vitória Oliver Atelier">
+        <div class="selo">Documentação técnica</div>
+        <h1>Manual de Instalação</h1>
+        <div class="subtitulo">Guia ilustrado para analistas de implementação</div>
+        <div class="rodape-capa">
+            Sistema de Gestão <strong>Vitória Oliver Atelier</strong><br>
+            Versão do sistema: 1.0.0 &nbsp;·&nbsp; Versão do manual: 1.0<br>
+            PHP + MySQL + XAMPP
+        </div>
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SUMÁRIO -->
+<!-- ============================================================ -->
+<div class="sumario">
+    <h1>Sumário</h1>
+    <ol>
+        <li><span class="num">1</span><span>Sobre este manual</span></li>
+        <li><span class="num">2</span><span>Visão geral da arquitetura</span></li>
+        <li><span class="num">3</span><span>Pré-requisitos</span></li>
+        <li><span class="num">4</span><span>Passo a passo da instalação</span></li>
+        <li><span class="num">5</span><span>Acesso pela rede local do ateliê</span></li>
+        <li><span class="num">6</span><span>Checklist de verificação pós-instalação</span></li>
+        <li><span class="num">7</span><span>Preparando para uso em produção</span></li>
+        <li><span class="num">8</span><span>Perfis de acesso e permissões</span></li>
+        <li><span class="num">9</span><span>Backup e restauração</span></li>
+        <li><span class="num">10</span><span>Solução de problemas comuns</span></li>
+        <li><span class="num">11</span><span>Anexo — Scripts SQL na ordem correta</span></li>
+    </ol>
+</div>
+
+<!-- ============================================================ -->
+<!-- 1. SOBRE ESTE MANUAL -->
+<!-- ============================================================ -->
+<div class="capitulo">
+    <h1><span class="rotulo">Capítulo 1</span>Sobre este manual</h1>
+
+    <p>
+        Este manual foi escrito para <strong>analistas de implementação</strong> responsáveis por
+        instalar o sistema de gestão <strong>Vitória Oliver Atelier</strong> em um servidor local,
+        dentro da rede do ateliê. Ele assume conhecimento básico de instalação de software em
+        Windows e navegação em pastas, mas não exige experiência prévia com PHP, MySQL ou
+        desenvolvimento web — cada passo é detalhado e ilustrado.
+    </p>
+
+    <div class="caixa caixa-dica">
+        <strong class="titulo-caixa">💡 Como usar este manual</strong>
+        Siga os capítulos na ordem apresentada. O Capítulo 4 (Passo a passo da instalação) é o
+        coração deste documento — os demais capítulos complementam com contexto, verificação e
+        solução de problemas.
+    </div>
+
+    <h2>O que é o sistema</h2>
+    <p>
+        O Vitória Oliver Atelier é um sistema de gestão interna para um ateliê de vestidos de
+        noiva, cobrindo clientes, CRM, agenda, vestidos, medidas, provas, produção, estoque,
+        fornecedores, documentos, financeiro, contratos (com geração de PDF), relatórios e
+        auditoria. Foi construído para funcionar <strong>inteiramente offline</strong>, dentro da
+        rede local do ateliê, sem depender de internet ou de serviços externos pagos.
+    </p>
+
+    <h2>Filosofia técnica do projeto</h2>
+    <p>O sistema foi propositalmente construído com o mínimo de dependências possível:</p>
+    <ul class="lista-simples">
+        <li>Apenas <strong>PHP + MySQL + HTML/CSS/JavaScript</strong> — sem Node.js, Python, Docker ou Composer.</li>
+        <li>Arquitetura MVC simples, escrita à mão (sem frameworks como Laravel ou Symfony).</li>
+        <li>Compatível com qualquer instalação padrão do <strong>XAMPP</strong> no Windows.</li>
+        <li>Backup e geração de PDF de contratos feitos em PHP puro, sem bibliotecas externas.</li>
+    </ul>
+    <p>
+        Essa filosofia existe para que o sistema seja fácil de instalar, hospedar e manter por
+        uma equipe pequena, sem depender de infraestrutura complexa.
+    </p>
+</div>
+
+<!-- ============================================================ -->
+<!-- 2. VISÃO GERAL DA ARQUITETURA -->
+<!-- ============================================================ -->
+<div class="capitulo">
+    <h1><span class="rotulo">Capítulo 2</span>Visão geral da arquitetura</h1>
+
+    <p>
+        Antes de instalar, é útil entender como as peças se encaixam. A figura abaixo resume o
+        caminho de uma requisição: o navegador (nos computadores do ateliê) fala com o Apache/PHP
+        via HTTP; o PHP, organizado em Router → Controllers → Models → Views, consulta o MySQL via
+        PDO e lê/grava arquivos (fotos, PDFs de contrato) na pasta <code>uploads/</code>.
+    </p>
+
+    <figure>
+        <img src="imagens/diagrama_arquitetura.png" alt="Diagrama de arquitetura">
+        <figcaption>Figura 1 — Fluxo de uma requisição, da tela até o banco de dados.</figcaption>
+    </figure>
+
+    <h2>Estrutura de pastas</h2>
+    <p>
+        O projeto segue uma estrutura de pastas previsível. Pastas com código interno (
+        <code>app/</code>, <code>config/</code>, <code>database/</code>, <code>routes/</code>,
+        <code>storage/</code>) são bloqueadas contra acesso direto pelo navegador através de um
+        arquivo <code>.htaccess</code> na raiz do projeto — só <code>public/</code> (o "front
+        controller") e <code>uploads/</code> ficam acessíveis via HTTP.
+    </p>
+
+    <figure>
+        <img src="imagens/diagrama_pastas.png" alt="Diagrama de estrutura de pastas">
+        <figcaption>Figura 2 — Estrutura de pastas do projeto e o que cada uma protege.</figcaption>
+    </figure>
+
+    <div class="caixa caixa-nota">
+        <strong class="titulo-caixa">📌 Por que isso importa para você, analista</strong>
+        Ao copiar os arquivos do projeto para o servidor, copie a <strong>pasta inteira</strong>
+        — não apenas o conteúdo de <code>public/</code>. O arquivo <code>.htaccess</code> da raiz
+        é o que faz o roteamento funcionar corretamente mesmo acessando pela raiz do domínio.
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- 3. PRÉ-REQUISITOS -->
+<!-- ============================================================ -->
+<div class="capitulo">
+    <h1><span class="rotulo">Capítulo 3</span>Pré-requisitos</h1>
+
+    <h2>Requisitos de hardware e sistema operacional</h2>
+    <table>
+        <tr><th>Item</th><th>Requisito mínimo</th></tr>
+        <tr><td>Sistema operacional</td><td>Windows 10/11 Pro ou Windows Server</td></tr>
+        <tr><td>Processador</td><td>Qualquer CPU dos últimos 8 anos (sistema é leve)</td></tr>
+        <tr><td>Memória RAM</td><td>4 GB (recomendado 8 GB se o computador também for usado para outras tarefas)</td></tr>
+        <tr><td>Espaço em disco</td><td>2 GB livres para o XAMPP + espaço para fotos/documentos anexados</td></tr>
+        <tr><td>Rede</td><td>Rede local (Wi-Fi ou cabo) conectando os computadores do ateliê</td></tr>
+    </table>
+
+    <h2>Softwares necessários</h2>
+    <table>
+        <tr><th>Software</th><th>Versão</th><th>Observação</th></tr>
+        <tr><td>XAMPP</td><td>Com PHP 8.1 ou superior</td><td>Inclui Apache, PHP, MySQL e phpMyAdmin</td></tr>
+        <tr><td>Extensão PHP <code>pdo_mysql</code></td><td>—</td><td>Vem habilitada por padrão no XAMPP</td></tr>
+        <tr><td>Extensão PHP <code>mbstring</code></td><td>—</td><td>Vem habilitada por padrão no XAMPP</td></tr>
+        <tr><td>Extensão PHP <code>zip</code></td><td>—</td><td>Vem habilitada por padrão no XAMPP (usada no backup)</td></tr>
+        <tr><td>Navegador atualizado</td><td>Chrome, Edge ou Firefox recente</td><td>Em todos os computadores que vão acessar o sistema</td></tr>
+    </table>
+
+    <div class="caixa caixa-dica">
+        <strong class="titulo-caixa">💡 Não é necessário instalar nada além do XAMPP</strong>
+        Diferente de sistemas modernos baseados em Node.js ou Python, este sistema não precisa de
+        <code>npm install</code>, <code>composer install</code> nem de nenhuma etapa de "build".
+        Copiar os arquivos e configurar o banco já é suficiente.
+    </div>
+
+    <h2>Arquivos que você vai receber</h2>
+    <p>Antes de começar, confirme que você tem em mãos:</p>
+    <ul class="lista-simples">
+        <li>O pacote do sistema (pasta <code>voatelier/</code>, geralmente entregue como um <code>.zip</code>);</li>
+        <li>As credenciais que serão usadas para o primeiro acesso (usuário <code>admin</code>, senha padrão <code>admin123</code> — trocada obrigatoriamente no primeiro login);</li>
+        <li>O IP ou nome de rede que o computador-servidor vai usar (defina isso com o cliente antes de instalar, se possível um IP fixo).</li>
+    </ul>
+</div>
+
+<!-- ============================================================ -->
+<!-- 4. PASSO A PASSO DA INSTALAÇÃO -->
+<!-- ============================================================ -->
+<div class="capitulo">
+    <h1><span class="rotulo">Capítulo 4</span>Passo a passo da instalação</h1>
+
+    <figure class="sem-borda">
+        <img src="imagens/diagrama_fluxo.png" alt="Fluxo de instalação">
+    </figure>
+
+    <h2>Passo 1 — Instalar o XAMPP</h2>
+    <ol class="passos">
+        <li>Baixe o instalador do XAMPP (com PHP 8.1+) no site oficial <strong>apachefriends.org</strong>.</li>
+        <li>Execute o instalador como Administrador.</li>
+        <li>Na seleção de componentes, mantenha ao menos <strong>Apache</strong>, <strong>MySQL</strong> e <strong>phpMyAdmin</strong> marcados.</li>
+        <li>Finalize a instalação (local padrão recomendado: <code>C:\xampp</code>).</li>
+        <li>Abra o <strong>XAMPP Control Panel</strong> e clique em <strong>Start</strong> ao lado de <em>Apache</em> e de <em>MySQL</em>. Os dois devem ficar com o fundo verde.</li>
+    </ol>
+
+    <div class="caixa caixa-atencao">
+        <strong class="titulo-caixa">⚠️ Se a porta 80 já estiver em uso</strong>
+        Se o Apache não iniciar porque a porta 80 está ocupada (comum quando o Skype ou o IIS estão
+        rodando), feche o outro programa ou altere a porta do Apache em
+        <code>Config → Apache (httpd.conf)</code>, ajustando também o Firewall do Windows conforme
+        a nova porta escolhida.
+    </div>
+
+    <h2>Passo 2 — Copiar os arquivos do sistema</h2>
+    <ol class="passos">
+        <li>Extraia o arquivo <code>.zip</code> recebido.</li>
+        <li>Copie a pasta <code>voatelier</code> (a pasta inteira, não apenas o conteúdo) para dentro de:
+            <pre class="bloco-codigo">C:\xampp\htdocs\</pre>
+        </li>
+        <li>Confirme que o caminho final é <code>C:\xampp\htdocs\voatelier\public\index.php</code> — se o <code>.zip</code> criar uma subpasta duplicada (ex: <code>voatelier\voatelier\</code>), mova os arquivos um nível acima.</li>
+    </ol>
+
+    <h2>Passo 3 — Verificar o mod_rewrite do Apache</h2>
+    <p>
+        O sistema depende do módulo <code>mod_rewrite</code> do Apache para funcionar
+        corretamente. Ele já vem <strong>ativado por padrão</strong> no XAMPP, mas vale confirmar:
+    </p>
+    <ol class="passos">
+        <li>Abra <code>C:\xampp\apache\conf\httpd.conf</code> em um editor de texto (Bloco de Notas serve).</li>
+        <li>Procure pela linha <code>LoadModule rewrite_module modules/mod_rewrite.so</code>.</li>
+        <li>Confirme que ela <strong>não começa com <code>#</code></strong> (o <code>#</code> comentaria a linha, desativando o módulo). Se estiver comentada, remova o <code>#</code> e salve.</li>
+        <li>Se você editou o arquivo, reinicie o Apache pelo XAMPP Control Panel (<strong>Stop</strong> e depois <strong>Start</strong>).</li>
+    </ol>
+
+    <h2>Passo 4 — Criar o banco de dados e importar os scripts SQL</h2>
+    <ol class="passos">
+        <li>Acesse <code>http://localhost/phpmyadmin</code> no navegador do próprio servidor.</li>
+        <li>Clique em <strong>Novo</strong> no menu lateral e crie um banco chamado exatamente <code>voatelier</code>, com o cotejamento (collation) <code>utf8mb4_unicode_ci</code>.</li>
+        <li>Com o banco <code>voatelier</code> selecionado, vá na aba <strong>Importar</strong>.</li>
+        <li>Clique em <strong>Escolher arquivo</strong>, selecione o primeiro script da lista abaixo, e clique em <strong>Executar</strong>.</li>
+        <li>Repita o processo para <strong>cada</strong> arquivo, sempre na ordem exata da tabela abaixo — cada script depende das tabelas criadas pelos anteriores.</li>
+    </ol>
+
+    <table>
+        <tr><th>#</th><th>Arquivo</th><th>O que faz</th></tr>
+        <tr><td>1</td><td><code>database/schema.sql</code></td><td>Cria as tabelas principais: usuários, perfis, permissões, auditoria</td></tr>
+        <tr><td>2</td><td><code>database/seed.sql</code></td><td>Cria os perfis de acesso e o usuário <code>admin</code> inicial</td></tr>
+        <tr><td>3</td><td><code>database/schema_etapa2.sql</code></td><td>Clientes, histórico, CRM, agenda</td></tr>
+        <tr><td>4</td><td><code>database/seed_etapa2.sql</code></td><td>Dados de demonstração (opcional — veja nota abaixo)</td></tr>
+        <tr><td>5</td><td><code>database/schema_etapa3.sql</code></td><td>Vestidos, medidas, provas, produção</td></tr>
+        <tr><td>6</td><td><code>database/seed_etapa3.sql</code></td><td>Dados de demonstração (opcional)</td></tr>
+        <tr><td>7</td><td><code>database/schema_etapa4.sql</code></td><td>Estoque, fornecedores, documentos</td></tr>
+        <tr><td>8</td><td><code>database/seed_etapa4.sql</code></td><td>Dados de demonstração (opcional)</td></tr>
+        <tr><td>9</td><td><code>database/schema_etapa5.sql</code></td><td>Financeiro, contratos</td></tr>
+        <tr><td>10</td><td><code>database/seed_etapa5.sql</code></td><td>Dados de demonstração (opcional)</td></tr>
+        <tr><td>11</td><td><code>database/seed_etapa6.sql</code></td><td>Permissão de Configurações/Backup (sem tabelas novas)</td></tr>
+    </table>
+
+    <div class="caixa caixa-dica">
+        <strong class="titulo-caixa">💡 Sobre os arquivos "seed" de demonstração</strong>
+        Os arquivos <code>seed_etapaN.sql</code> (com N de 2 a 5) cadastram clientes, vestidos e
+        registros fictícios para o cliente testar o sistema já com dados de exemplo. Isso é
+        recomendado durante a fase de homologação com o ateliê. <strong>Antes de o sistema entrar
+        em uso real</strong>, esses registros de demonstração devem ser apagados (veja o
+        Capítulo 7).
+    </div>
+
+    <h2>Passo 5 — Configurar a conexão com o banco</h2>
+    <ol class="passos">
+        <li>Abra o arquivo <code>C:\xampp\htdocs\voatelier\config\database.php</code> em um editor de texto.</li>
+        <li>Na instalação padrão do XAMPP, o usuário é <code>root</code> e a senha é vazia — <strong>não é necessário alterar nada</strong> nesse caso.</li>
+        <li>Se o MySQL desse servidor usa outro usuário/senha, ajuste os campos correspondentes no arquivo.</li>
+    </ol>
+    <pre class="bloco-codigo">return [
+    'driver'   =&gt; 'mysql',
+    'host'     =&gt; '127.0.0.1',
+    'port'     =&gt; '3306',
+    'database' =&gt; 'voatelier',
+    'username' =&gt; 'root',
+    'password' =&gt; '',
+    'charset'  =&gt; 'utf8mb4',
+];</pre>
+
+    <h2>Passo 6 — Primeiro acesso</h2>
+    <ol class="passos">
+        <li>No navegador, acesse <code>http://localhost/voatelier</code>.</li>
+        <li>Você deve ver a tela de login abaixo.</li>
+        <li>Entre com usuário <code>admin</code> e senha <code>admin123</code>.</li>
+        <li>O sistema vai <strong>obrigar a troca dessa senha</strong> antes de liberar o acesso — defina uma senha forte e guarde em local seguro.</li>
+    </ol>
+
+    <figure>
+        <img src="imagens/screenshot_login.png" alt="Tela de login do sistema" style="max-width: 320px;">
+        <figcaption>Figura 3 — Tela de login (screenshot real do sistema).</figcaption>
+    </figure>
+
+    <h2>Passo 7 — Confirmar que o painel carrega</h2>
+    <p>
+        Depois de trocar a senha, você deve cair automaticamente no Painel principal, parecido com
+        a figura abaixo (os números variam conforme os dados de demonstração importados):
+    </p>
+
+    <figure>
+        <img src="imagens/screenshot_dashboard.png" alt="Painel do sistema após login">
+        <figcaption>Figura 4 — Painel principal após o primeiro login (screenshot real do sistema).</figcaption>
+    </figure>
+</div>
+
+<!-- ============================================================ -->
+<!-- 5. ACESSO PELA REDE LOCAL -->
+<!-- ============================================================ -->
+<div class="capitulo">
+    <h1><span class="rotulo">Capítulo 5</span>Acesso pela rede local do ateliê</h1>
+
+    <p>
+        Depois de confirmar que o sistema funciona no próprio computador-servidor, libere o
+        acesso para os outros computadores do ateliê (recepção, provador, costura etc.), todos
+        conectados à mesma rede local.
+    </p>
+
+    <figure>
+        <img src="imagens/diagrama_rede.png" alt="Diagrama de rede local">
+        <figcaption>Figura 5 — Topologia de acesso: um servidor, vários computadores clientes na mesma rede.</figcaption>
+    </figure>
+
+    <h2>Passo 1 — Descobrir o IP do servidor</h2>
+    <ol class="passos">
+        <li>No computador-servidor, abra o <strong>Prompt de Comando</strong> (tecle <code>Win</code>, digite <code>cmd</code>, Enter).</li>
+        <li>Digite <code>ipconfig</code> e tecle Enter.</li>
+        <li>Anote o número ao lado de <strong>Endereço IPv4</strong> (ex: <code>192.168.0.100</code>).</li>
+    </ol>
+
+    <div class="caixa caixa-dica">
+        <strong class="titulo-caixa">💡 Recomendação: fixar o IP do servidor</strong>
+        Por padrão, o roteador pode atribuir um IP diferente ao servidor depois de reiniciado. Para
+        evitar que o endereço mude e quebre o acesso dos outros computadores, configure um
+        <strong>IP fixo (reserva de DHCP)</strong> nas configurações do roteador, associado ao
+        endereço MAC do computador-servidor.
+    </div>
+
+    <h2>Passo 2 — Liberar a porta no Firewall do Windows</h2>
+    <ol class="passos">
+        <li>Abra <strong>Painel de Controle → Sistema e Segurança → Firewall do Windows Defender</strong>.</li>
+        <li>Clique em <strong>Configurações Avançadas</strong> no menu lateral.</li>
+        <li>Clique em <strong>Regras de Entrada → Nova Regra...</strong></li>
+        <li>Tipo de regra: <strong>Porta</strong>.</li>
+        <li>Protocolo: <strong>TCP</strong>, porta específica: <strong>80</strong> (ou a porta configurada no Apache, se diferente).</li>
+        <li>Ação: <strong>Permitir a conexão</strong>.</li>
+        <li>Perfil: marque apenas <strong>Privado</strong> — desmarque <strong>Público</strong> e <strong>Domínio</strong>, para que o sistema não fique acessível fora da rede do ateliê.</li>
+        <li>Dê um nome à regra (ex: "VO Atelier - Acesso Local") e finalize.</li>
+    </ol>
+
+    <h2>Passo 3 — Acessar dos outros computadores</h2>
+    <p>
+        Em qualquer computador conectado à mesma rede, abra o navegador e acesse
+        <code>http://IP_DO_SERVIDOR/voatelier</code>, substituindo pelo IP anotado no Passo 1.
+        Exemplo:
+    </p>
+    <pre class="bloco-codigo">http://192.168.0.100/voatelier</pre>
+</div>
+
+<!-- ============================================================ -->
+<!-- 6. CHECKLIST DE VERIFICAÇÃO -->
+<!-- ============================================================ -->
+<div class="capitulo">
+    <h1><span class="rotulo">Capítulo 6</span>Checklist de verificação pós-instalação</h1>
+
+    <p>Antes de considerar a instalação concluída, confirme cada item abaixo:</p>
+
+    <h2>Funcionalidade básica</h2>
+    <ul class="checklist">
+        <li>A tela de login carrega em <code>http://localhost/voatelier</code></li>
+        <li>Login com <code>admin</code> / <code>admin123</code> funciona e força a troca de senha</li>
+        <li>Após trocar a senha, o Painel carrega sem erros</li>
+        <li>O menu lateral mostra todos os módulos (Clientes, CRM, Agenda, Vestidos, Provas, Produção, Estoque, Fornecedores, Financeiro, Contratos, Relatórios, Auditoria, Configurações)</li>
+        <li>Consigo abrir a ficha de um cliente de demonstração e ver suas informações</li>
+    </ul>
+
+    <h2>Segurança</h2>
+    <ul class="checklist">
+        <li>Acessar <code>http://localhost/voatelier/config/database.php</code> retorna erro 403 (Forbidden)</li>
+        <li>Acessar <code>http://localhost/voatelier/app/core/Database.php</code> retorna erro 403</li>
+        <li>Um usuário sem permissão de administrador não vê os menus de Auditoria e Configurações</li>
+    </ul>
+
+    <h2>Rede local</h2>
+    <ul class="checklist">
+        <li>O sistema abre normalmente a partir de pelo menos um segundo computador da rede</li>
+        <li>O IP do servidor foi fixado no roteador (reserva de DHCP)</li>
+    </ul>
+
+    <h2>Funcionalidades avançadas</h2>
+    <ul class="checklist">
+        <li>Consigo gerar o PDF de um contrato de demonstração (menu Contratos)</li>
+        <li>Consigo baixar um backup do banco em Configurações → Backup</li>
+        <li>O Kanban do CRM e o Kanban de Produção respondem ao arrastar-e-soltar dos cards</li>
+    </ul>
+</div>
+
+<!-- ============================================================ -->
+<!-- 7. PREPARANDO PARA PRODUÇÃO -->
+<!-- ============================================================ -->
+<div class="capitulo">
+    <h1><span class="rotulo">Capítulo 7</span>Preparando para uso em produção</h1>
+
+    <p>
+        Os passos anteriores deixam o sistema pronto para <strong>homologação</strong> — ou seja,
+        para o ateliê testar com dados de exemplo. Antes de o sistema entrar em uso real no dia a
+        dia, complete os passos abaixo.
+    </p>
+
+    <h2>1. Remover os dados de demonstração</h2>
+    <p>
+        Os clientes, vestidos, agendamentos e demais registros fictícios inseridos pelos arquivos
+        <code>seed_etapaN.sql</code> devem ser removidos. A forma mais simples é recriar o banco do
+        zero, executando apenas os scripts <code>schema*.sql</code> (estrutura) e os arquivos
+        <code>seed.sql</code> / <code>seed_etapa6.sql</code> (que criam apenas usuários, perfis e
+        permissões — sem dados fictícios de clientes).
+    </p>
+
+    <div class="caixa caixa-atencao">
+        <strong class="titulo-caixa">⚠️ Ordem correta ao recriar o banco</strong>
+        Apague o banco <code>voatelier</code> pelo phpMyAdmin e reimporte, nesta ordem:
+        <code>schema.sql</code> → <code>seed.sql</code> → <code>schema_etapa2.sql</code> →
+        <code>schema_etapa3.sql</code> → <code>schema_etapa4.sql</code> → <code>schema_etapa5.sql</code>
+        → <code>seed_etapa6.sql</code>. Não execute os arquivos <code>seed_etapa2.sql</code> a
+        <code>seed_etapa5.sql</code> desta vez.
+    </div>
+
+    <h2>2. Trocar o ambiente para produção</h2>
+    <p>
+        Abra <code>config/config.php</code> e altere:
+    </p>
+    <pre class="bloco-codigo">define('APP_ENV', 'production'); // era 'development'</pre>
+    <p>
+        Isso desativa a exibição de erros técnicos detalhados na tela para os usuários finais —
+        eles passam a ver apenas mensagens amigáveis, enquanto os detalhes continuam sendo
+        gravados em <code>storage/logs/php-errors.log</code> para você consultar se precisar.
+    </p>
+
+    <h2>3. Trocar a senha do administrador</h2>
+    <p>
+        Se você usou a senha padrão <code>admin123</code> durante os testes, garanta que ela foi
+        trocada por uma senha forte antes da entrega. O sistema já força essa troca no primeiro
+        login, mas confirme que ninguém pulou essa etapa em um ambiente de teste anterior.
+    </p>
+
+    <h2>4. Cadastrar os usuários reais da equipe</h2>
+    <p>
+        Cadastre um usuário individual para cada funcionária do ateliê, com o perfil de acesso
+        adequado (veja o Capítulo 8). Evite que a equipe compartilhe o mesmo login — isso
+        prejudica a rastreabilidade da auditoria.
+    </p>
+
+    <h2>5. Configurar a rotina de backup</h2>
+    <p>
+        Defina com o cliente uma rotina periódica de backup (diária ou semanal, conforme o volume
+        de uso). Veja o Capítulo 9 para as opções disponíveis.
+    </p>
+</div>
+
+<!-- ============================================================ -->
+<!-- 8. PERFIS DE ACESSO -->
+<!-- ============================================================ -->
+<div class="capitulo">
+    <h1><span class="rotulo">Capítulo 8</span>Perfis de acesso e permissões</h1>
+
+    <p>
+        O sistema vem com cinco perfis de acesso pré-configurados. Ao cadastrar cada usuária da
+        equipe, escolha o perfil mais adequado à função dela no ateliê.
+    </p>
+
+    <table>
+        <tr><th>Perfil</th><th>Acesso típico</th></tr>
+        <tr><td><strong>Administrador</strong></td><td>Acesso completo, incluindo gestão de usuários, auditoria e backup</td></tr>
+        <tr><td><strong>Gerente</strong></td><td>Tudo, exceto gestão de usuários e auditoria — indicado para a gestora do ateliê</td></tr>
+        <tr><td><strong>Atendimento</strong></td><td>Clientes, CRM e agenda — indicado para a recepção</td></tr>
+        <tr><td><strong>Costureira</strong></td><td>Medidas, provas, produção e visualização de vestidos</td></tr>
+        <tr><td><strong>Financeiro</strong></td><td>Financeiro, relatórios e visualização de contratos</td></tr>
+    </table>
+
+    <div class="caixa caixa-nota">
+        <strong class="titulo-caixa">📌 Onde cadastrar novos usuários</strong>
+        Nesta versão, o cadastro de novos usuários é feito diretamente pelo phpMyAdmin, na tabela
+        <code>usuarios</code> (a senha deve ser gerada com <code>password_hash()</code> — nunca
+        insira senhas em texto puro). Uma tela de gestão de usuários pela própria interface é uma
+        evolução natural para uma próxima versão do sistema.
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- 9. BACKUP E RESTAURAÇÃO -->
+<!-- ============================================================ -->
+<div class="capitulo">
+    <h1><span class="rotulo">Capítulo 9</span>Backup e restauração</h1>
+
+    <p>O sistema oferece duas formas de fazer backup:</p>
+
+    <h2>Opção A — Pela interface (recomendada para a equipe do ateliê)</h2>
+    <ol class="passos">
+        <li>Faça login com um usuário <strong>Administrador</strong>.</li>
+        <li>Acesse <strong>Configurações</strong> no menu lateral.</li>
+        <li>Clique em <strong>Baixar backup do banco (.sql)</strong> — o download começa na hora.</li>
+        <li>Clique em <strong>Baixar uploads (.zip)</strong> para baixar as fotos e documentos anexados.</li>
+        <li>Guarde os dois arquivos em um local seguro, de preferência fora do computador-servidor (pendrive, HD externo ou nuvem).</li>
+    </ol>
+
+    <h2>Opção B — Pela linha de comando (recomendada para automatizar)</h2>
+    <p>
+        O arquivo <code>backup.bat</code>, na raiz do projeto, automatiza o backup via
+        <code>mysqldump</code>. Para automatizá-lo:
+    </p>
+    <ol class="passos">
+        <li>Abra <code>backup.bat</code> em um editor de texto e confirme os caminhos no topo do arquivo.</li>
+        <li>Teste executando o arquivo manualmente (duplo clique) e confirme que a pasta de backup foi criada.</li>
+        <li>Use o <strong>Agendador de Tarefas do Windows</strong> para executar <code>backup.bat</code> automaticamente (ex: todos os dias às 22h).</li>
+    </ol>
+
+    <h2>Como restaurar um backup</h2>
+    <ol class="passos">
+        <li>Abra o phpMyAdmin e crie (ou selecione) o banco <code>voatelier</code>.</li>
+        <li>Vá em <strong>Importar</strong> e selecione o arquivo <code>.sql</code> do backup.</li>
+        <li>Para os uploads, extraia o <code>.zip</code> do backup dentro da pasta <code>uploads/</code> do sistema, substituindo o conteúdo atual.</li>
+    </ol>
+
+    <div class="caixa caixa-dica">
+        <strong class="titulo-caixa">💡 Teste a restauração periodicamente</strong>
+        Um backup só tem valor se puder ser restaurado. Recomenda-se testar o processo de
+        restauração completo (em um banco de testes separado) pelo menos uma vez, logo após a
+        instalação, para garantir que o procedimento funciona quando for realmente necessário.
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- 10. SOLUÇÃO DE PROBLEMAS -->
+<!-- ============================================================ -->
+<div class="capitulo">
+    <h1><span class="rotulo">Capítulo 10</span>Solução de problemas comuns</h1>
+
+    <table>
+        <tr><th>Sintoma</th><th>Causa provável</th><th>Solução</th></tr>
+        <tr>
+            <td>Tela em branco ou erro 500 ao acessar o sistema</td>
+            <td><code>mod_rewrite</code> desativado no Apache</td>
+            <td>Revise o Passo 3 do Capítulo 4</td>
+        </tr>
+        <tr>
+            <td>"Não foi possível concluir esta ação" ao abrir qualquer página</td>
+            <td>Banco <code>voatelier</code> não existe ou credenciais erradas em <code>database.php</code></td>
+            <td>Confirme que todos os scripts SQL foram importados e que as credenciais batem com o MySQL do servidor</td>
+        </tr>
+        <tr>
+            <td>Login sempre inválido mesmo com <code>admin</code> / <code>admin123</code></td>
+            <td><code>seed.sql</code> não foi executado, ou foi executado antes de <code>schema.sql</code></td>
+            <td>Reimporte na ordem exata da tabela do Capítulo 4</td>
+        </tr>
+        <tr>
+            <td>CSS não carrega (sistema aparece "sem estilo")</td>
+            <td>A pasta do projeto tem nome diferente de <code>voatelier</code></td>
+            <td>Ajuste a constante <code>BASE_URL</code> em <code>config/config.php</code> para bater com o nome real da pasta</td>
+        </tr>
+        <tr>
+            <td>Erro 404 em todas as páginas, inclusive o login</td>
+            <td><code>.htaccess</code> da raiz não está sendo lido pelo Apache</td>
+            <td>Confirme <code>AllowOverride All</code> na configuração do diretório <code>htdocs</code> em <code>httpd.conf</code></td>
+        </tr>
+        <tr>
+            <td>Outros computadores da rede não conseguem acessar</td>
+            <td>Firewall bloqueando a porta, ou IP incorreto</td>
+            <td>Revise o Capítulo 5; confirme o IP com <code>ipconfig</code> novamente</td>
+        </tr>
+        <tr>
+            <td>Acentos aparecem corrompidos (ex: "Ã§Ã£o" em vez de "ção")</td>
+            <td>Importação via linha de comando sem especificar charset</td>
+            <td>Reimporte pelo phpMyAdmin (recomendado), ou use <code>mysql --default-character-set=utf8mb4</code> na linha de comando</td>
+        </tr>
+        <tr>
+            <td>Botão de gerar PDF do contrato não responde</td>
+            <td>Pasta <code>uploads/contratos/</code> sem permissão de escrita</td>
+            <td>A pasta é criada automaticamente na primeira geração; confirme que o PHP tem permissão de escrita dentro de <code>uploads/</code></td>
+        </tr>
+        <tr>
+            <td>Botão "Baixar uploads" (.zip) dá erro</td>
+            <td>Extensão <code>ZipArchive</code> do PHP desabilitada</td>
+            <td>Vem habilitada por padrão no XAMPP; se necessário, ative <code>extension=zip</code> em <code>php.ini</code> e reinicie o Apache</td>
+        </tr>
+    </table>
+
+    <div class="caixa caixa-nota">
+        <strong class="titulo-caixa">📌 Onde olhar quando nada disso resolver</strong>
+        Consulte <code>storage/logs/php-errors.log</code> — todos os erros técnicos do sistema são
+        registrados ali, mesmo quando a tela mostra apenas uma mensagem amigável.
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- 11. ANEXO -->
+<!-- ============================================================ -->
+<div class="capitulo">
+    <h1><span class="rotulo">Capítulo 11</span>Anexo — Scripts SQL na ordem correta</h1>
+
+    <p>Referência rápida com todos os scripts do sistema, para consulta durante a instalação:</p>
+
+    <table>
+        <tr><th>Ordem</th><th>Arquivo</th><th>Tipo</th></tr>
+        <tr><td>1</td><td><code>database/schema.sql</code></td><td>Estrutura</td></tr>
+        <tr><td>2</td><td><code>database/seed.sql</code></td><td>Dados essenciais (perfis, admin)</td></tr>
+        <tr><td>3</td><td><code>database/schema_etapa2.sql</code></td><td>Estrutura</td></tr>
+        <tr><td>4</td><td><code>database/seed_etapa2.sql</code></td><td>Demonstração (opcional)</td></tr>
+        <tr><td>5</td><td><code>database/schema_etapa3.sql</code></td><td>Estrutura</td></tr>
+        <tr><td>6</td><td><code>database/seed_etapa3.sql</code></td><td>Demonstração (opcional)</td></tr>
+        <tr><td>7</td><td><code>database/schema_etapa4.sql</code></td><td>Estrutura</td></tr>
+        <tr><td>8</td><td><code>database/seed_etapa4.sql</code></td><td>Demonstração (opcional)</td></tr>
+        <tr><td>9</td><td><code>database/schema_etapa5.sql</code></td><td>Estrutura</td></tr>
+        <tr><td>10</td><td><code>database/seed_etapa5.sql</code></td><td>Demonstração (opcional)</td></tr>
+        <tr><td>11</td><td><code>database/seed_etapa6.sql</code></td><td>Dados essenciais (permissão de backup)</td></tr>
+    </table>
+
+    <p class="rodape-pagina">
+        Vitória Oliver Atelier — Manual de Instalação v1.0 · Documento de uso interno da equipe de implementação
+    </p>
+</div>
+
+</body>
+</html>

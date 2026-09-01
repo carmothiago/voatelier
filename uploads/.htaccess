@@ -1,0 +1,8 @@
+# Nunca permitir execução de scripts PHP dentro da pasta de uploads,
+# mesmo que um arquivo malicioso seja enviado com extensão disfarçada.
+<FilesMatch "\.(php|php3|php4|php5|php7|phtml|pht)$">
+    Require all denied
+</FilesMatch>
+
+Options -ExecCGI
+php_flag engine off

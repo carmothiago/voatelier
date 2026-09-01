@@ -1,0 +1,3 @@
+# Bloqueia qualquer acesso via navegador a esta pasta.
+# Estes arquivos só devem ser carregados internamente pelo PHP (require/autoload).
+Require all denied

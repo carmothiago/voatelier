@@ -1,0 +1,460 @@
+/* =====================================================================
+   Vitória Oliver Atelier - Estilo visual
+   Paleta: branco, off-white, cinza, preto, dourado suave
+   ===================================================================== */
+
+:root {
+    --cor-fundo: #faf8f5;
+    --cor-superficie: #ffffff;
+    --cor-borda: #e7e1d8;
+    --cor-texto: #2b2723;
+    --cor-texto-suave: #6f675d;
+    --cor-dourado: #b08d57;
+    --cor-dourado-suave: #f1e6d3;
+    --cor-preto: #1c1a18;
+    --cor-sucesso: #4c7a52;
+    --cor-erro: #a4453a;
+    --cor-aviso: #b08d3f;
+    --sombra: 0 2px 12px rgba(28, 26, 24, 0.06);
+    --raio: 10px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background-color: var(--cor-fundo);
+    color: var(--cor-texto);
+    font-family: 'Segoe UI', Georgia, 'Times New Roman', serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--cor-preto);
+}
+
+a {
+    color: var(--cor-dourado);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* ---------------------------------------------------------------
+   Tela de autenticação (login / troca de senha)
+   --------------------------------------------------------------- */
+.tela-auth {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(160deg, #ffffff 0%, #f4efe6 100%);
+    padding: 24px;
+}
+
+.cartao-auth {
+    background: var(--cor-superficie);
+    border: 1px solid var(--cor-borda);
+    border-radius: var(--raio);
+    box-shadow: var(--sombra);
+    padding: 48px 40px;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.logo-marca {
+    display: block;
+    max-width: 240px;
+    width: 100%;
+    height: auto;
+    margin: 0 auto 28px;
+}
+
+.logo-marca-pequena {
+    max-width: 170px;
+    margin-bottom: 18px;
+}
+
+.cartao-auth h1 {
+    font-size: 26px;
+    margin: 0 0 28px 0;
+}
+
+.campo {
+    text-align: left;
+    margin-bottom: 18px;
+}
+
+.campo label {
+    display: block;
+    font-size: 13px;
+    color: var(--cor-texto-suave);
+    margin-bottom: 6px;
+}
+
+.campo input,
+.campo select,
+.campo textarea {
+    width: 100%;
+    padding: 11px 13px;
+    border: 1px solid var(--cor-borda);
+    border-radius: 6px;
+    font-size: 15px;
+    background: #fff;
+    color: var(--cor-texto);
+}
+
+.campo input:focus,
+.campo select:focus,
+.campo textarea:focus {
+    outline: none;
+    border-color: var(--cor-dourado);
+    box-shadow: 0 0 0 3px var(--cor-dourado-suave);
+}
+
+.botao {
+    display: inline-block;
+    width: 100%;
+    background: var(--cor-preto);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 12px 16px;
+    font-size: 15px;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+
+.botao:hover {
+    background: var(--cor-dourado);
+}
+
+.botao-secundario {
+    background: transparent;
+    color: var(--cor-texto);
+    border: 1px solid var(--cor-borda);
+}
+
+.botao-secundario:hover {
+    background: var(--cor-dourado-suave);
+}
+
+.alerta {
+    padding: 12px 14px;
+    border-radius: 6px;
+    font-size: 14px;
+    margin-bottom: 18px;
+    text-align: left;
+}
+
+.alerta-erro {
+    background: #fbeceb;
+    color: var(--cor-erro);
+    border: 1px solid #f0cfcb;
+}
+
+.alerta-sucesso {
+    background: #eef4ec;
+    color: var(--cor-sucesso);
+    border: 1px solid #d3e5cf;
+}
+
+.alerta-aviso {
+    background: #faf3e3;
+    color: var(--cor-aviso);
+    border: 1px solid #eddfb9;
+}
+
+/* ---------------------------------------------------------------
+   Layout interno (após login)
+   --------------------------------------------------------------- */
+.app-shell {
+    display: flex;
+    min-height: 100vh;
+}
+
+.app-sidebar {
+    width: 240px;
+    background: var(--cor-preto);
+    color: #f2ece2;
+    padding: 28px 20px;
+    flex-shrink: 0;
+}
+
+.logo-marca-sidebar {
+    max-width: 190px;
+    margin: 0 0 36px 0;
+}
+
+.app-sidebar nav a {
+    display: block;
+    color: #d9d2c5;
+    padding: 10px 12px;
+    border-radius: 6px;
+    margin-bottom: 4px;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+.app-sidebar nav a:hover,
+.app-sidebar nav a.ativo {
+    background: rgba(176, 141, 87, 0.18);
+    color: #fff;
+}
+
+.app-conteudo {
+    flex: 1;
+    padding: 32px 40px;
+}
+
+.app-topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 28px;
+}
+
+.app-topbar .usuario-info {
+    font-size: 14px;
+    color: var(--cor-texto-suave);
+}
+
+.cartoes-resumo {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 18px;
+    margin-bottom: 32px;
+}
+
+.cartao {
+    background: var(--cor-superficie);
+    border: 1px solid var(--cor-borda);
+    border-radius: var(--raio);
+    padding: 22px;
+    box-shadow: var(--sombra);
+}
+
+.cartao h3 {
+    font-size: 14px;
+    color: var(--cor-texto-suave);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 0 0 10px 0;
+    font-family: inherit;
+}
+
+.cartao .valor {
+    font-size: 28px;
+    font-family: Georgia, serif;
+    color: var(--cor-preto);
+}
+
+.painel {
+    background: var(--cor-superficie);
+    border: 1px solid var(--cor-borda);
+    border-radius: var(--raio);
+    padding: 24px;
+    box-shadow: var(--sombra);
+    margin-bottom: 24px;
+}
+
+.tabela-elegante {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.tabela-elegante th {
+    text-align: left;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--cor-texto-suave);
+    border-bottom: 1px solid var(--cor-borda);
+    padding: 10px 8px;
+}
+
+.tabela-elegante td {
+    padding: 12px 8px;
+    border-bottom: 1px solid #f0ece4;
+    font-size: 14px;
+}
+
+.rodape-sistema {
+    text-align: center;
+    font-size: 12px;
+    color: var(--cor-texto-suave);
+    margin-top: 28px;
+}
+
+/* ---------------------------------------------------------------
+   Kanban (CRM)
+   --------------------------------------------------------------- */
+.kanban-board {
+    display: flex;
+    gap: 14px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+}
+
+.kanban-coluna {
+    background: #f4f1ea;
+    border-radius: var(--raio);
+    min-width: 240px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    max-height: calc(100vh - 220px);
+}
+
+.kanban-coluna-titulo {
+    padding: 14px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--cor-texto);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e9e3d8;
+}
+
+.kanban-contador {
+    background: #fff;
+    border-radius: 20px;
+    font-size: 11px;
+    padding: 2px 8px;
+    color: var(--cor-texto-suave);
+}
+
+.kanban-lista {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow-y: auto;
+    flex: 1;
+    min-height: 60px;
+}
+
+.kanban-lista.kanban-lista-hover {
+    background: var(--cor-dourado-suave);
+    border-radius: 8px;
+}
+
+.kanban-card {
+    background: #fff;
+    border: 1px solid var(--cor-borda);
+    border-radius: 8px;
+    padding: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    cursor: grab;
+}
+
+.kanban-card.arrastando {
+    opacity: 0.4;
+}
+
+.kanban-card-nome {
+    font-weight: 600;
+    color: var(--cor-preto);
+    font-size: 14px;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.kanban-card-info {
+    font-size: 12px;
+    color: var(--cor-texto-suave);
+}
+
+/* ---------------------------------------------------------------
+   Calendário (Agenda)
+   --------------------------------------------------------------- */
+.calendario-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+}
+
+.calendario-cabecalho {
+    margin-bottom: 6px;
+}
+
+.calendario-dia-semana {
+    text-align: center;
+    font-size: 12px;
+    color: var(--cor-texto-suave);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding-bottom: 6px;
+}
+
+.calendario-celula {
+    background: #fdfcfa;
+    border: 1px solid var(--cor-borda);
+    border-radius: 8px;
+    min-height: 92px;
+    padding: 6px;
+    font-size: 12px;
+}
+
+.calendario-celula-vazia {
+    background: transparent;
+    border: none;
+}
+
+.calendario-celula-hoje {
+    border-color: var(--cor-dourado);
+    background: var(--cor-dourado-suave);
+}
+
+.calendario-numero-dia {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+    color: var(--cor-texto-suave);
+    margin-bottom: 4px;
+}
+
+.calendario-add {
+    text-decoration: none;
+    color: var(--cor-dourado);
+    font-weight: 700;
+    padding: 0 4px;
+}
+
+.calendario-evento {
+    display: block;
+    color: #fff;
+    border-radius: 4px;
+    padding: 2px 5px;
+    margin-bottom: 3px;
+    font-size: 11px;
+    text-decoration: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+@media (max-width: 900px) {
+    .app-shell {
+        flex-direction: column;
+    }
+
+    .app-sidebar {
+        width: 100%;
+    }
+
+    .app-conteudo {
+        padding: 24px;
+    }
+}
