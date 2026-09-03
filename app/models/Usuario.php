@@ -9,6 +9,123 @@ class Usuario extends Model
     protected string $table = 'usuarios';
 
     /**
+     * Campos que podem ser escritos via formulário de criação/edição.
+     * senha_hash é tratada separadamente — nunca passa por aqui.
+     */
+    public const CAMPOS_FORMULARIO = [
+        'perfil_id', 'nome', 'usuario', 'email', 'status', 'precisa_trocar_senha',
+    ];
+
+    // ------------------------------------------------------------------
+    // Consultas para a interface de gerenciamento
+    // ------------------------------------------------------------------
+
+    /**
+     * Lista todos os usuários com o nome do perfil, com filtro opcional.
+     */
+    public function listarTodos(?string $busca = null): array
+    {
+        $sql = 'SELECT u.*, p.nome AS perfil_nome, p.slug AS perfil_slug
+                FROM usuarios u
+                INNER JOIN perfis p ON p.id = u.perfil_id';
+        $params = [];
+
+        if (!empty($busca)) {
+            $sql .= ' WHERE u.nome LIKE :busca1 OR u.usuario LIKE :busca2 OR u.email LIKE :busca3';
+            $termo = '%' . $busca . '%';
+            $params = ['busca1' => $termo, 'busca2' => $termo, 'busca3' => $termo];
+        }
+
+        $sql .= ' ORDER BY u.nome ASC';
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetchAll();
+    }
+
+    /**
+     * Busca um usuário pelo id, trazendo nome e slug do perfil.
+     */
+    public function findComPerfil(int $id): array|false
+    {
+        $stmt = $this->db->prepare(
+            'SELECT u.*, p.nome AS perfil_nome, p.slug AS perfil_slug
+             FROM usuarios u
+             INNER JOIN perfis p ON p.id = u.perfil_id
+             WHERE u.id = :id
+             LIMIT 1'
+        );
+        $stmt->execute(['id' => $id]);
+        return $stmt->fetch();
+    }
+
+    /**
+     * Marca o usuário como inativo (exclusão lógica).
+     * Usa a coluna status pois usuarios não tem coluna ativo.
+     */
+    public function excluirLogicamente(int $id): bool
+    {
+        return $this->update($id, ['status' => 'inativo']);
+    }
+
+    /**
+     * Verifica se o login já está em uso por outro usuário.
+     */
+    public function loginEmUso(string $login, ?int $ignorarId = null): bool
+    {
+        $sql = 'SELECT COUNT(*) FROM usuarios WHERE usuario = :login';
+        $params = ['login' => $login];
+
+        if ($ignorarId !== null) {
+            $sql .= ' AND id != :id';
+            $params['id'] = $ignorarId;
+        }
+
+        return (int) $this->db->prepare($sql)->execute($params) &&
+               (int) $this->db->query("SELECT COUNT(*) FROM usuarios WHERE usuario = " . $this->db->quote($login) . ($ignorarId ? " AND id != {$ignorarId}" : ''))->fetchColumn() > 0;
+    }
+
+    /**
+     * Verifica se o e-mail já está em uso por outro usuário.
+     */
+    public function emailEmUso(string $email, ?int $ignorarId = null): bool
+    {
+        $sql = 'SELECT COUNT(*) FROM usuarios WHERE email = :email';
+        $params = ['email' => $email];
+
+        if ($ignorarId !== null) {
+            $sql .= ' AND id != :id';
+            $params['id'] = $ignorarId;
+        }
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($params);
+        return (int) $stmt->fetchColumn() > 0;
+    }
+
+    /**
+     * Verifica se o login já está em uso — versão correta com prepared statement.
+     */
+    public function loginJaExiste(string $login, ?int $ignorarId = null): bool
+    {
+        $sql = 'SELECT COUNT(*) FROM usuarios WHERE usuario = :login';
+        $params = ['login' => $login];
+
+        if ($ignorarId !== null) {
+            $sql .= ' AND id != :id';
+            $params['id'] = $ignorarId;
+        }
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($params);
+        return (int) $stmt->fetchColumn() > 0;
+    }
+
+    // ------------------------------------------------------------------
+    // Métodos usados pelo sistema de autenticação (Auth.php)
+    // ------------------------------------------------------------------
+
+    /**
      * Busca um usuário pelo login, já trazendo o slug do perfil.
      */
     public function findByLogin(string $login): array|false

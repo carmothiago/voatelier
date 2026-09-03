@@ -18,7 +18,7 @@ class Material extends Model
         'ajuste'  => 'Ajuste',
     ];
 
-    public function listarAtivos(?string $busca = null, bool $apenasAbaixoMinimo = false): array
+    public function listarAtivos(?string $busca = null, bool $apenasAbaixoMinimo = false, int $limite = 0, int $offset = 0): array
     {
         $sql = "SELECT m.*, f.nome AS fornecedor_nome
                 FROM materiais m
@@ -39,9 +39,36 @@ class Material extends Model
 
         $sql .= ' ORDER BY m.nome ASC';
 
+        if ($limite > 0) {
+            $sql .= ' LIMIT :limite OFFSET :offset';
+            $params['limite'] = $limite;
+            $params['offset'] = $offset;
+        }
+
         $stmt = $this->db->prepare($sql);
         $stmt->execute($params);
         return $stmt->fetchAll();
+    }
+
+    public function contarAtivos(?string $busca = null, bool $apenasAbaixoMinimo = false): int
+    {
+        $sql = 'SELECT COUNT(*) FROM materiais m WHERE m.ativo = 1';
+        $params = [];
+
+        if (!empty($busca)) {
+            $sql .= ' AND (m.nome LIKE :busca1 OR m.codigo LIKE :busca2)';
+            $termo = '%' . $busca . '%';
+            $params['busca1'] = $termo;
+            $params['busca2'] = $termo;
+        }
+
+        if ($apenasAbaixoMinimo) {
+            $sql .= ' AND m.quantidade <= m.estoque_minimo';
+        }
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($params);
+        return (int) $stmt->fetchColumn();
     }
 
     public function buscarComFornecedor(int $id): array|false

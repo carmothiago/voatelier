@@ -8,16 +8,30 @@ class Contrato extends Model
 {
     protected string $table = 'contratos';
 
-    public function listarTodos(): array
+    public function listarTodos(int $limite = 0, int $offset = 0): array
     {
-        $stmt = $this->db->query(
-            "SELECT ct.*, c.nome_completo AS cliente_nome, v.codigo AS vestido_codigo, v.nome AS vestido_nome
-             FROM contratos ct
-             INNER JOIN clientes c ON c.id = ct.cliente_id
-             LEFT JOIN vestidos v ON v.id = ct.vestido_id
-             ORDER BY ct.data_contrato DESC"
-        );
+        $sql = "SELECT ct.*, c.nome_completo AS cliente_nome, v.codigo AS vestido_codigo, v.nome AS vestido_nome
+                FROM contratos ct
+                INNER JOIN clientes c ON c.id = ct.cliente_id
+                LEFT JOIN vestidos v ON v.id = ct.vestido_id
+                ORDER BY ct.data_contrato DESC";
+
+        if ($limite > 0) {
+            $sql .= ' LIMIT :limite OFFSET :offset';
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindValue(':limite', $limite, \PDO::PARAM_INT);
+            $stmt->bindValue(':offset', $offset, \PDO::PARAM_INT);
+            $stmt->execute();
+        } else {
+            $stmt = $this->db->query($sql);
+        }
+
         return $stmt->fetchAll();
+    }
+
+    public function contarTodos(): int
+    {
+        return (int) $this->db->query('SELECT COUNT(*) FROM contratos')->fetchColumn();
     }
 
     public function listarPorCliente(int $clienteId): array

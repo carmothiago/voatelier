@@ -13,14 +13,14 @@
 // ---------------------------------------------------------------------
 define('APP_NAME', 'Vitória Oliver Atelier');
 define('APP_SHORT_NAME', 'VO Atelier');
-define('APP_VERSION', '1.0.0');
+define('APP_VERSION', '1.0.1');
 
 // ---------------------------------------------------------------------
 // Ambiente
 // Troque para 'production' quando o sistema estiver em uso real.
 // Em 'production', erros técnicos não são exibidos na tela.
 // ---------------------------------------------------------------------
-define('APP_ENV', 'development'); // 'development' | 'production'
+define('APP_ENV', 'production'); // 'development' | 'production'
 
 // ---------------------------------------------------------------------
 // Fuso horário
@@ -57,11 +57,18 @@ define('UPLOAD_ALLOWED_MIME', [
 // ---------------------------------------------------------------------
 define('SESSION_NAME', 'voatelier_session');
 define('SESSION_LIFETIME', 60 * 60 * 8); // 8 horas
-define('LOGIN_MAX_TENTATIVAS', 5);
+define('LOGIN_MAX_TENTATIVAS', 5);        // bloqueio por conta de usuário
 define('LOGIN_BLOQUEIO_MINUTOS', 15);
 
+// Rate limiting por IP (independente do usuário tentado)
+// Um IP é bloqueado após N tentativas falhas somadas entre qualquer usuário.
+define('LOGIN_IP_MAX_TENTATIVAS', 20);   // mais generoso que o por-usuário para não bloquear redes compartilhadas (ex: Wi-Fi do atelier)
+define('LOGIN_IP_BLOQUEIO_MINUTOS', 30); // bloqueio mais longo porque é um sinal mais forte de ataque
+
 // ---------------------------------------------------------------------
-// Exibição de erros conforme o ambiente
+// Paginação de listagens
+// ---------------------------------------------------------------------
+define('PAGINA_TAMANHO', 25); // registros por página nas listagens
 // ---------------------------------------------------------------------
 if (APP_ENV === 'development') {
     ini_set('display_errors', '1');

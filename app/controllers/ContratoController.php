@@ -6,6 +6,7 @@ use App\Core\Auth;
 use App\Core\Controller;
 use App\Core\Csrf;
 use App\Core\PdfGerador;
+use App\Core\Validador;
 use App\Models\Cliente;
 use App\Models\Contrato;
 use App\Models\Vestido;
@@ -17,11 +18,20 @@ class ContratoController extends Controller
         $this->requireLogin();
         $this->requirePermission('contratos.visualizar');
 
+        $pagina = max(1, (int) $this->input('pagina', 1));
+
         $contratoModel = new Contrato();
+        $paginador     = new \App\Core\Paginador(
+            $contratoModel->contarTodos(),
+            PAGINA_TAMANHO,
+            $pagina
+        );
 
         $this->view('contratos/index', [
             'titulo'    => 'Contratos',
-            'contratos' => $contratoModel->listarTodos(),
+            'contratos' => $contratoModel->listarTodos(PAGINA_TAMANHO, $paginador->offset()),
+            'paginador' => $paginador,
+            'urlBase'   => url('/contratos'),
         ]);
     }
 
@@ -71,6 +81,20 @@ class ContratoController extends Controller
             'observacoes'     => trim((string) $this->input('observacoes', '')) ?: null,
             'criado_por'      => Auth::id(),
         ];
+
+        $v = new Validador($dados);
+        $v->data('data_contrato', 'Data do contrato')
+          ->valorMonetario('valor', 'Valor')
+          ->data('data_entrega', 'Data de entrega')
+          ->data('data_devolucao', 'Data de devolução')
+          ->dataFimAposInicio('data_contrato', 'data_entrega', 'Data de entrega')
+          ->dataFimAposInicio('data_contrato', 'data_devolucao', 'Data de devolução');
+
+        if ($v->falhou()) {
+            setFlash('erro', $v->primeiroErro());
+            $this->redirect('/contratos/novo');
+            return;
+        }
 
         $contratoModel = new Contrato();
         $id = $contratoModel->insert($dados);

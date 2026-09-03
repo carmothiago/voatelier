@@ -15,17 +15,29 @@ class MaterialController extends Controller
         $this->requireLogin();
         $this->requirePermission('estoque.visualizar');
 
-        $busca = trim((string) $this->input('q', ''));
+        $busca              = trim((string) $this->input('q', ''));
         $apenasAbaixoMinimo = $this->input('abaixo_minimo') === '1';
+        $pagina             = max(1, (int) $this->input('pagina', 1));
 
         $materialModel = new Material();
+        $paginador     = new \App\Core\Paginador(
+            $materialModel->contarAtivos($busca ?: null, $apenasAbaixoMinimo),
+            PAGINA_TAMANHO,
+            $pagina
+        );
+
+        // Monta urlBase preservando todos os filtros ativos
+        $qs = array_filter(['q' => $busca, 'abaixo_minimo' => $apenasAbaixoMinimo ? '1' : '']);
+        $urlBase = url('/estoque') . ($qs ? '?' . http_build_query($qs) : '');
 
         $this->view('estoque/index', [
-            'titulo'    => 'Estoque',
-            'materiais' => $materialModel->listarAtivos($busca ?: null, $apenasAbaixoMinimo),
-            'busca'     => $busca,
+            'titulo'             => 'Estoque',
+            'materiais'          => $materialModel->listarAtivos($busca ?: null, $apenasAbaixoMinimo, PAGINA_TAMANHO, $paginador->offset()),
+            'busca'              => $busca,
             'apenasAbaixoMinimo' => $apenasAbaixoMinimo,
             'totalAbaixoMinimo'  => $materialModel->contarAbaixoDoMinimo(),
+            'paginador'          => $paginador,
+            'urlBase'            => $urlBase,
         ]);
     }
 

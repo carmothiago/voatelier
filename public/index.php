@@ -7,6 +7,10 @@
 
 declare(strict_types=1);
 
+// Carrega as variáveis de ambiente do .env antes de qualquer configuração
+require __DIR__ . '/../config/env.php';
+carregarEnv(__DIR__ . '/../.env');
+
 require __DIR__ . '/../config/config.php';
 
 // -----------------------------------------------------------------
@@ -53,12 +57,36 @@ session_set_cookie_params([
 session_start();
 
 // -----------------------------------------------------------------
-// Cabeçalhos de segurança HTTP (revisão de segurança - Etapa 6)
+// Cabeçalhos de segurança HTTP
 // -----------------------------------------------------------------
 header('X-Content-Type-Options: nosniff');       // impede o navegador de "adivinhar" tipos de arquivo
 header('X-Frame-Options: SAMEORIGIN');            // impede que o sistema seja carregado dentro de um <iframe> de outro site (clickjacking)
 header('Referrer-Policy: same-origin');           // não vaza a URL completa em requisições para fora do sistema
 header('X-XSS-Protection: 0');                    // desativa o filtro legado do navegador (obsoleto e às vezes explorável); a proteção real vem do escaping consistente (htmlspecialchars) já aplicado em todas as views
+
+// Content Security Policy
+// - default-src 'self'  → bloqueia qualquer recurso de origem externa por padrão
+// - script-src 'self'   → apenas scripts locais (/js/app.js); nenhum inline <script> ou CDN
+// - style-src 'self' 'unsafe-inline' → permite o CSS externo local e os atributos style=""
+//   espalhados nas views (remoção futura desses inline styles permitiria suprimir 'unsafe-inline')
+// - img-src 'self' data: → imagens locais + data URIs (usadas em alguns navegadores para favicons)
+// - font-src 'self'     → fontes locais apenas; sem Google Fonts ou CDN de fontes
+// - connect-src 'self'  → fetch() e XHR apenas para a própria origem (Kanban, upload, etc.)
+// - object-src 'none'   → bloqueia <object>, <embed> e <applet> — vetores clássicos de XSS
+// - base-uri 'self'     → impede que uma injeção altere a <base> da página e redirecione recursos
+// - form-action 'self'  → formulários só podem submeter para a própria origem
+$csp = implode('; ', [
+    "default-src 'self'",
+    "script-src 'self'",
+    "style-src 'self' 'unsafe-inline'",
+    "img-src 'self' data:",
+    "font-src 'self'",
+    "connect-src 'self'",
+    "object-src 'none'",
+    "base-uri 'self'",
+    "form-action 'self'",
+]);
+header('Content-Security-Policy: ' . $csp);
 
 // -----------------------------------------------------------------
 // Roteamento

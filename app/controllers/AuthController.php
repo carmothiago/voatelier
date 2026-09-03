@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Core\Auth;
 use App\Core\Controller;
 use App\Core\Csrf;
+use App\Core\RateLimiter;
 use App\Models\Usuario;
 
 class AuthController extends Controller
@@ -24,6 +25,15 @@ class AuthController extends Controller
     {
         if (!Csrf::validate($this->input('csrf_token'))) {
             setFlash('erro', 'Sessão expirada. Tente novamente.');
+            $this->redirect('/login');
+            return;
+        }
+
+        // Verifica bloqueio por IP antes de qualquer consulta ao banco
+        $checagemIp = RateLimiter::verificar(Auth::clientIp());
+        if ($checagemIp['bloqueado']) {
+            registrarAuditoria('auth', 'login_bloqueado_ip', Auth::clientIp());
+            setFlash('erro', $checagemIp['erro']);
             $this->redirect('/login');
             return;
         }

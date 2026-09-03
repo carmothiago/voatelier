@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Core\Auth;
 use App\Core\Controller;
 use App\Core\Csrf;
+use App\Core\Validador;
 use App\Models\Agendamento;
 use App\Models\Cliente;
 
@@ -15,13 +16,22 @@ class ClienteController extends Controller
         $this->requireLogin();
         $this->requirePermission('clientes.visualizar');
 
-        $busca = trim((string) $this->input('q', ''));
+        $busca    = trim((string) $this->input('q', ''));
+        $pagina   = max(1, (int) $this->input('pagina', 1));
+
         $clienteModel = new Cliente();
+        $paginador    = new \App\Core\Paginador(
+            $clienteModel->contarAtivos($busca ?: null),
+            PAGINA_TAMANHO,
+            $pagina
+        );
 
         $this->view('clientes/index', [
-            'titulo'   => 'Clientes',
-            'clientes' => $clienteModel->listarAtivos($busca ?: null),
-            'busca'    => $busca,
+            'titulo'    => 'Clientes',
+            'clientes'  => $clienteModel->listarAtivos($busca ?: null, PAGINA_TAMANHO, $paginador->offset()),
+            'busca'     => $busca,
+            'paginador' => $paginador,
+            'urlBase'   => url('/clientes') . ($busca !== '' ? '?q=' . urlencode($busca) : ''),
         ]);
     }
 
@@ -49,15 +59,16 @@ class ClienteController extends Controller
         }
 
         $dados = $this->dadosDoFormulario();
+        $erro  = $this->validar($dados);
 
-        if (empty($dados['nome_completo'])) {
-            setFlash('erro', 'O nome completo da cliente é obrigatório.');
+        if ($erro) {
+            setFlash('erro', $erro);
             $this->redirect('/clientes/novo');
             return;
         }
 
         $clienteModel = new Cliente();
-        $dados['criado_por'] = Auth::id();
+        $dados['criado_por']    = Auth::id();
         $dados['atualizado_por'] = Auth::id();
 
         $id = $clienteModel->insert($dados);
@@ -149,9 +160,10 @@ class ClienteController extends Controller
         }
 
         $dados = $this->dadosDoFormulario();
+        $erro  = $this->validar($dados);
 
-        if (empty($dados['nome_completo'])) {
-            setFlash('erro', 'O nome completo da cliente é obrigatório.');
+        if ($erro) {
+            setFlash('erro', $erro);
             $this->redirect('/clientes/' . $id . '/editar');
             return;
         }
@@ -203,5 +215,25 @@ class ClienteController extends Controller
         }
 
         return $dados;
+    }
+
+    /**
+     * Valida os dados do formulário de cliente.
+     * Retorna a mensagem do primeiro erro encontrado ou null se tudo ok.
+     */
+    private function validar(array $dados): ?string
+    {
+        $v = new Validador($dados);
+
+        $v->obrigatorio('nome_completo', 'Nome completo')
+          ->tamanhoMaximo('nome_completo', 150, 'Nome completo')
+          ->cpf('cpf')
+          ->email('email')
+          ->data('data_nascimento', 'Data de nascimento')
+          ->data('data_casamento', 'Data do casamento')
+          ->tamanhoMaximo('telefone', 20, 'Telefone')
+          ->tamanhoMaximo('whatsapp', 20, 'WhatsApp');
+
+        return $v->falhou() ? $v->primeiroErro() : null;
     }
 }

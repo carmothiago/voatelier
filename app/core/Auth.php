@@ -3,6 +3,7 @@
 namespace App\Core;
 
 use App\Models\Usuario;
+use App\Core\RateLimiter;
 
 /**
  * Autenticação e controle de acesso baseado em sessão PHP.
@@ -64,15 +65,18 @@ class Auth
      */
     public static function attempt(string $login, string $senha): array
     {
+        $ip = self::clientIp();
         $usuarioModel = new Usuario();
         $usuario = $usuarioModel->findByLogin($login);
 
         if (!$usuario) {
             // Mensagem genérica: nunca revelar se o usuário existe ou não.
+            RateLimiter::registrarFalha($ip);
             return ['ok' => false, 'erro' => 'Usuário ou senha inválidos.'];
         }
 
         if ($usuario['status'] !== 'ativo') {
+            // Não conta como tentativa de força bruta — usuário existe mas está inativo.
             return ['ok' => false, 'erro' => 'Este usuário está inativo. Procure o administrador.'];
         }
 
@@ -83,22 +87,24 @@ class Auth
 
         if (!password_verify($senha, $usuario['senha_hash'])) {
             $usuarioModel->registrarTentativaFalha((int) $usuario['id']);
+            RateLimiter::registrarFalha($ip);
             return ['ok' => false, 'erro' => 'Usuário ou senha inválidos.'];
         }
 
-        // Login correto: reseta tentativas, atualiza último acesso
-        $usuarioModel->registrarLoginSucesso((int) $usuario['id'], self::clientIp());
+        // Login correto: reseta contadores de falha (usuário e IP)
+        $usuarioModel->registrarLoginSucesso((int) $usuario['id'], $ip);
+        RateLimiter::liberar($ip);
 
         // Regenera o ID de sessão para prevenir fixation após autenticação
         session_regenerate_id(true);
 
         $permissoes = $usuarioModel->listarPermissoesDoPerfil((int) $usuario['perfil_id']);
 
-        $_SESSION['usuario_id']          = (int) $usuario['id'];
-        $_SESSION['usuario_nome']        = $usuario['nome'];
-        $_SESSION['usuario_login']       = $usuario['usuario'];
-        $_SESSION['usuario_perfil']      = $usuario['perfil_slug'];
-        $_SESSION['usuario_permissoes']  = $permissoes;
+        $_SESSION['usuario_id']           = (int) $usuario['id'];
+        $_SESSION['usuario_nome']         = $usuario['nome'];
+        $_SESSION['usuario_login']        = $usuario['usuario'];
+        $_SESSION['usuario_perfil']       = $usuario['perfil_slug'];
+        $_SESSION['usuario_permissoes']   = $permissoes;
         $_SESSION['precisa_trocar_senha'] = (bool) $usuario['precisa_trocar_senha'];
 
         return ['ok' => true, 'erro' => null, 'usuario' => $usuario];

@@ -24,7 +24,7 @@ class Vestido extends Model
         'sob_medida'  => 'Sob medida',
     ];
 
-    public function listarAtivos(?string $busca = null, ?string $status = null, ?int $clienteId = null): array
+    public function listarAtivos(?string $busca = null, ?string $status = null, ?int $clienteId = null, int $limite = 0, int $offset = 0): array
     {
         $sql = "SELECT v.*, c.nome_completo AS cliente_nome
                 FROM vestidos v
@@ -50,6 +50,44 @@ class Vestido extends Model
         }
 
         $sql .= ' ORDER BY v.codigo ASC';
+
+        if ($limite > 0) {
+            $sql .= ' LIMIT :limite OFFSET :offset';
+            $params['limite'] = $limite;
+            $params['offset'] = $offset;
+        }
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetchAll();
+    }
+
+    public function contarAtivos(?string $busca = null, ?string $status = null, ?int $clienteId = null): int
+    {
+        $sql = 'SELECT COUNT(*) FROM vestidos v WHERE v.ativo = 1';
+        $params = [];
+
+        if (!empty($busca)) {
+            $sql .= ' AND (v.nome LIKE :busca1 OR v.codigo LIKE :busca2)';
+            $termo = '%' . $busca . '%';
+            $params['busca1'] = $termo;
+            $params['busca2'] = $termo;
+        }
+
+        if (!empty($status)) {
+            $sql .= ' AND v.status = :status';
+            $params['status'] = $status;
+        }
+
+        if ($clienteId !== null) {
+            $sql .= ' AND v.cliente_id = :cliente_id';
+            $params['cliente_id'] = $clienteId;
+        }
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($params);
+        return (int) $stmt->fetchColumn();
+    }
 
         $stmt = $this->db->prepare($sql);
         $stmt->execute($params);

@@ -17,10 +17,12 @@ use App\Controllers\DocumentoController;
 use App\Controllers\FinanceiroController;
 use App\Controllers\FornecedorController;
 use App\Controllers\MaterialController;
+use App\Controllers\MedidaCampoController;
 use App\Controllers\MedidaController;
 use App\Controllers\ProducaoController;
 use App\Controllers\ProvaController;
 use App\Controllers\RelatorioController;
+use App\Controllers\UsuarioController;
 use App\Controllers\VestidoController;
 
 // Redireciona a raiz para o dashboard (que por sua vez exige login)
@@ -94,6 +96,16 @@ $router->get('/configuracoes/backup', [BackupController::class, 'index']);
 $router->post('/configuracoes/backup/banco', [BackupController::class, 'exportarBanco']);
 $router->post('/configuracoes/backup/uploads', [BackupController::class, 'exportarUploads']);
 
+// Usuários
+$router->get('/usuarios',                        [UsuarioController::class, 'index']);
+$router->get('/usuarios/novo',                   [UsuarioController::class, 'novoForm']);
+$router->post('/usuarios',                       [UsuarioController::class, 'store']);
+$router->get('/usuarios/{id}',                   [UsuarioController::class, 'show']);
+$router->get('/usuarios/{id}/editar',            [UsuarioController::class, 'editarForm']);
+$router->post('/usuarios/{id}',                  [UsuarioController::class, 'update']);
+$router->post('/usuarios/{id}/reset-senha',      [UsuarioController::class, 'resetSenha']);
+$router->post('/usuarios/{id}/excluir',          [UsuarioController::class, 'excluir']);
+
 // Estoque
 $router->get('/estoque', [MaterialController::class, 'index']);
 $router->get('/estoque/novo', [MaterialController::class, 'novoForm']);
@@ -130,6 +142,12 @@ $router->post('/vestidos/{id}/excluir', [VestidoController::class, 'excluir']);
 // Medidas (aninhadas em cliente)
 $router->get('/clientes/{clienteId}/medidas', [MedidaController::class, 'index']);
 $router->post('/clientes/{clienteId}/medidas', [MedidaController::class, 'store']);
+
+// Configuração de campos de medida
+$router->get('/medidas/campos',                          [MedidaCampoController::class, 'index']);
+$router->post('/medidas/campos',                         [MedidaCampoController::class, 'store']);
+$router->post('/medidas/campos/reordenar',               [MedidaCampoController::class, 'reordenar']);
+$router->post('/medidas/campos/{id}/toggle',             [MedidaCampoController::class, 'toggle']);
 
 // Provas
 $router->get('/provas', [ProvaController::class, 'index']);

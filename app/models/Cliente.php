@@ -29,7 +29,7 @@ class Cliente extends Model
         'perdido'                => 'Perdido',
     ];
 
-    public function listarAtivos(?string $busca = null): array
+    public function listarAtivos(?string $busca = null, int $limite = 0, int $offset = 0): array
     {
         $sql = 'SELECT * FROM clientes WHERE ativo = 1';
         $params = [];
@@ -42,9 +42,31 @@ class Cliente extends Model
 
         $sql .= ' ORDER BY nome_completo ASC';
 
+        if ($limite > 0) {
+            $sql .= ' LIMIT :limite OFFSET :offset';
+            $params['limite'] = $limite;
+            $params['offset'] = $offset;
+        }
+
         $stmt = $this->db->prepare($sql);
         $stmt->execute($params);
         return $stmt->fetchAll();
+    }
+
+    public function contarAtivos(?string $busca = null): int
+    {
+        $sql = 'SELECT COUNT(*) FROM clientes WHERE ativo = 1';
+        $params = [];
+
+        if (!empty($busca)) {
+            $sql .= ' AND (nome_completo LIKE :busca1 OR cpf LIKE :busca2 OR telefone LIKE :busca3 OR whatsapp LIKE :busca4)';
+            $termo = '%' . $busca . '%';
+            $params = ['busca1' => $termo, 'busca2' => $termo, 'busca3' => $termo, 'busca4' => $termo];
+        }
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($params);
+        return (int) $stmt->fetchColumn();
     }
 
     public function listarParaKanban(): array

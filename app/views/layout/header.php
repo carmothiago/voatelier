@@ -62,6 +62,9 @@ $ehAtivo = function (string $prefixo) use ($caminhoAtual): string {
             <?php if (podeAcessar('auditoria.visualizar')): ?>
                 <a href="<?= url('/auditoria') ?>" class="<?= $ehAtivo('/auditoria') ?>">Auditoria</a>
             <?php endif; ?>
+            <?php if (podeAcessar('usuarios.visualizar')): ?>
+                <a href="<?= url('/usuarios') ?>" class="<?= $ehAtivo('/usuarios') ?>">Usuários</a>
+            <?php endif; ?>
             <?php if (podeAcessar('configuracoes.visualizar')): ?>
                 <a href="<?= url('/configuracoes/backup') ?>" class="<?= $ehAtivo('/configuracoes') ?>">Configurações</a>
             <?php endif; ?>

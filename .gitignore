@@ -1,0 +1,20 @@
+# === Credenciais e segredos ===
+.env
+
+# === Dependências (caso Composer seja adicionado no futuro) ===
+/vendor/
+
+# === Uploads de usuários (não versionar arquivos enviados) ===
+/uploads/*
+!/uploads/.gitkeep
+
+# === Logs ===
+/storage/logs/*.log
+
+# === Arquivos de sistema e IDE ===
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo

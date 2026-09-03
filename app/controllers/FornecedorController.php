@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Core\Auth;
 use App\Core\Controller;
 use App\Core\Csrf;
+use App\Core\Validador;
 use App\Models\Fornecedor;
 
 class FornecedorController extends Controller
@@ -14,13 +15,22 @@ class FornecedorController extends Controller
         $this->requireLogin();
         $this->requirePermission('fornecedores.visualizar');
 
-        $busca = trim((string) $this->input('q', ''));
+        $busca  = trim((string) $this->input('q', ''));
+        $pagina = max(1, (int) $this->input('pagina', 1));
+
         $fornecedorModel = new Fornecedor();
+        $paginador       = new \App\Core\Paginador(
+            $fornecedorModel->contarAtivos($busca ?: null),
+            PAGINA_TAMANHO,
+            $pagina
+        );
 
         $this->view('fornecedores/index', [
             'titulo'      => 'Fornecedores',
-            'fornecedores'=> $fornecedorModel->listarAtivos($busca ?: null),
+            'fornecedores'=> $fornecedorModel->listarAtivos($busca ?: null, PAGINA_TAMANHO, $paginador->offset()),
             'busca'       => $busca,
+            'paginador'   => $paginador,
+            'urlBase'     => url('/fornecedores') . ($busca !== '' ? '?q=' . urlencode($busca) : ''),
         ]);
     }
 
@@ -48,9 +58,10 @@ class FornecedorController extends Controller
         }
 
         $dados = $this->dadosDoFormulario();
+        $erro  = $this->validar($dados);
 
-        if (empty($dados['nome'])) {
-            setFlash('erro', 'Informe o nome do fornecedor.');
+        if ($erro) {
+            setFlash('erro', $erro);
             $this->redirect('/fornecedores/novo');
             return;
         }
@@ -128,9 +139,10 @@ class FornecedorController extends Controller
         }
 
         $dados = $this->dadosDoFormulario();
+        $erro  = $this->validar($dados);
 
-        if (empty($dados['nome'])) {
-            setFlash('erro', 'Informe o nome do fornecedor.');
+        if ($erro) {
+            setFlash('erro', $erro);
             $this->redirect('/fornecedores/' . $id . '/editar');
             return;
         }
@@ -175,5 +187,19 @@ class FornecedorController extends Controller
         }
 
         return $dados;
+    }
+
+    private function validar(array $dados): ?string
+    {
+        $v = new Validador($dados);
+
+        $v->obrigatorio('nome', 'Nome do fornecedor')
+          ->tamanhoMaximo('nome', 150, 'Nome')
+          ->cpfOuCnpj('cnpj_cpf')
+          ->email('email')
+          ->tamanhoMaximo('telefone', 20, 'Telefone')
+          ->tamanhoMaximo('whatsapp', 20, 'WhatsApp');
+
+        return $v->falhou() ? $v->primeiroErro() : null;
     }
 }

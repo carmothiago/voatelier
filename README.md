@@ -507,4 +507,3 @@ O sistema está pronto para ser instalado no XAMPP seguindo as instruções da [
 Feito com 🧵 para o **Atelier Vitória Oliver**
 
 </div>
-

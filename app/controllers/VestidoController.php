@@ -15,16 +15,28 @@ class VestidoController extends Controller
         $this->requireLogin();
         $this->requirePermission('vestidos.visualizar');
 
-        $vestidoModel = new Vestido();
-        $busca = trim((string) $this->input('q', ''));
+        $busca  = trim((string) $this->input('q', ''));
         $status = (string) $this->input('status', '');
+        $pagina = max(1, (int) $this->input('pagina', 1));
+
+        $vestidoModel = new Vestido();
+        $paginador    = new \App\Core\Paginador(
+            $vestidoModel->contarAtivos($busca ?: null, $status ?: null),
+            PAGINA_TAMANHO,
+            $pagina
+        );
+
+        $qs = array_filter(['q' => $busca, 'status' => $status]);
+        $urlBase = url('/vestidos') . ($qs ? '?' . http_build_query($qs) : '');
 
         $this->view('vestidos/index', [
-            'titulo'   => 'Vestidos',
-            'vestidos' => $vestidoModel->listarAtivos($busca ?: null, $status ?: null),
-            'busca'    => $busca,
-            'statusFiltro' => $status,
-            'statusLista'  => Vestido::STATUS,
+            'titulo'      => 'Vestidos',
+            'vestidos'    => $vestidoModel->listarAtivos($busca ?: null, $status ?: null, null, PAGINA_TAMANHO, $paginador->offset()),
+            'busca'       => $busca,
+            'statusFiltro'=> $status,
+            'statusLista' => Vestido::STATUS,
+            'paginador'   => $paginador,
+            'urlBase'     => $urlBase,
         ]);
     }
 

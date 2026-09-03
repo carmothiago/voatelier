@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Core\Auth;
 use App\Core\Controller;
 use App\Core\Csrf;
+use App\Core\Validador;
 use App\Models\Cliente;
 use App\Models\ContaPagar;
 use App\Models\ContaReceber;
@@ -89,6 +90,17 @@ class FinanceiroController extends Controller
 
         if (!$dados['cliente_id'] || empty($dados['descricao']) || empty($dados['vencimento'])) {
             setFlash('erro', 'Preencha cliente, descrição e vencimento.');
+            $this->redirect('/financeiro/receber/novo');
+            return;
+        }
+
+        $v = new Validador($dados);
+        $v->data('vencimento', 'Data de vencimento')
+          ->valorMonetario('valor', 'Valor')
+          ->tamanhoMaximo('descricao', 255, 'Descrição');
+
+        if ($v->falhou()) {
+            setFlash('erro', $v->primeiroErro());
             $this->redirect('/financeiro/receber/novo');
             return;
         }
@@ -178,6 +190,17 @@ class FinanceiroController extends Controller
 
         if (empty($dados['descricao']) || empty($dados['vencimento'])) {
             setFlash('erro', 'Preencha descrição e vencimento.');
+            $this->redirect('/financeiro/pagar/novo');
+            return;
+        }
+
+        $v = new Validador($dados);
+        $v->data('vencimento', 'Data de vencimento')
+          ->valorMonetario('valor', 'Valor')
+          ->tamanhoMaximo('descricao', 255, 'Descrição');
+
+        if ($v->falhou()) {
+            setFlash('erro', $v->primeiroErro());
             $this->redirect('/financeiro/pagar/novo');
             return;
         }

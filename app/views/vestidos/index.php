@@ -46,5 +46,6 @@
                 <?php endforeach; ?>
             </tbody>
         </table>
+        <?= $paginador->links($urlBase) ?>
     <?php endif; ?>
 </div>
