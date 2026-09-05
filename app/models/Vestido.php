@@ -89,11 +89,6 @@ class Vestido extends Model
         return (int) $stmt->fetchColumn();
     }
 
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute($params);
-        return $stmt->fetchAll();
-    }
-
     public function buscarComCliente(int $id): array|false
     {
         $stmt = $this->db->prepare(

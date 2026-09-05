@@ -12,21 +12,11 @@
  */
 
 return [
-<<<<<<< HEAD
     'driver'   => $_ENV['DB_DRIVER']   ?? 'mysql',
     'host'     => $_ENV['DB_HOST']     ?? '127.0.0.1',
     'port'     => $_ENV['DB_PORT']     ?? '3306',
     'database' => $_ENV['DB_DATABASE'] ?? 'voatelier',
-    'username' => $_ENV['DB_USERNAME'] ?? '',
+    'username' => $_ENV['DB_USERNAME'] ?? 'root',
     'password' => $_ENV['DB_PASSWORD'] ?? '',
     'charset'  => $_ENV['DB_CHARSET']  ?? 'utf8mb4',
-=======
-    'driver'   => 'mysql',
-    'host'     => 'mariadb',
-    'port'     => '3306',
-    'database' => 'voatelier',
-    'username' => 'root',
-    'password' => 'root',
-    'charset'  => 'utf8mb4',
->>>>>>> c05301cc3a2b99ed089f573267258ef51f6a6d81
 ];
